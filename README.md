@@ -1,14 +1,7 @@
-Got you!  
-Your content is solid, you’ve clearly done a good job explaining the steps and showing evidence with screenshots — I’ll just clean up the structure, formatting, and flow to make it look more professional and easier to read. Here's a better-structured version of your README (without changing your content):
+# **Computer Network Simulation in Cisco Packet Tracer**
 
----
-
-# **VLANs Lab**
-
-## **Description**  
-This project demonstrates the creation of VLANs in Cisco Packet Tracer, utilizing trunking to enable inter-switch communication.
-
----
+## **Description**
+This project demonstrates the setup and simulation of a computer network using Cisco Packet Tracer. It covers configuring routers, switches, and PCs, setting up IP addresses, and verifying connectivity between devices across subnets.
 
 ## **Languages and Utilities Used**
 - **Cisco Packet Tracer**: Network simulation tool.
@@ -18,167 +11,157 @@ This project demonstrates the creation of VLANs in Cisco Packet Tracer, utilizin
 ## **Environments Used**
 - **Windows 11**: Operating system for running Cisco Packet Tracer.
 
----
-
 ## **Program Walk-through**
 
-### **Instructions**
-
-Configure the network as follows:
-
-1. **3650 Layer 3 Switch** — IP addresses and interVLAN routing:
-   - VLAN 1: `10.1.1.254/24`
-   - VLAN 10: `10.1.10.254/24`
-   - VLAN 20: `10.1.20.254/24`
-   - VLAN 30: `10.1.30.254/24`
-   - VLAN 100: `10.1.100.254/24`
-
-2. **Access Layer Switches** — management IP addresses in VLAN 1:
-   - Switch 1: `10.1.1.1/24`
-   - Switch 2: `10.1.1.2/24`
-   - Switch 3: `10.1.1.3/24`
-
-3. **Access Ports Configuration:**
-   - PC1: VLAN 10 — `10.1.10.10/24`
-   - PC2: VLAN 20 — `10.1.20.20/24`
-   - PC3: VLAN 30 — `10.1.30.30/24`
-   - Server1: VLAN 100 — `10.1.100.100/24`
-
-4. **Switch Connections:**
-   - Configure ports between switches as trunk ports.
-
-5. **Testing:**
-   - Ensure all PCs and the server can ping each other.
-   - Verify switches can ping the PCs and server.
-
----
-
 ### **1. Initial Setup**
+The initial topology consists of routers, switches, and PCs, with IP configurations assigned to each. Below is an overview of the addressing scheme:
 
-The initial topology consists of switches and PCs:
+| Device     | Interface | IP Address   | Subnet Mask     | Default Gateway |
+|------------|-----------|--------------|-----------------|-----------------|
+| Router (R1)| GO/0      | 192.168.0.1  | 255.255.255.0   | NA              |
+|            | GO/1      | 192.168.1.1  | 255.255.255.0   | NA              |
+| Switch (S1)|           | 192.168.0.2  | 255.255.255.0   | 192.168.0.1     |
+| Switch (S2)|           | 192.168.1.2  | 255.255.255.0   | 192.168.1.1     |
+| PC0        |           | 192.168.0.3  | 255.255.255.0   | 192.168.0.1     |
+| PC1        |           | 192.168.0.4  | 255.255.255.0   | 192.168.0.1     |
+| PC2        |           | 192.168.1.3  | 255.255.255.0   | 192.168.1.1     |
+| PC3        |           | 192.168.1.4  | 255.255.255.0   | 192.168.1.1     |
 
+*Screenshot of the initial setup:*  
 <p align="center">
-  <img src="https://imgur.com/H7WHfR0.png" width="80%" alt="Initial Setup"/>
+Initial Setup:  <br/>
+<img src="https://imgur.com/TMCs9i3.png" height="80%" width="80%" alt="Initial Setup"/>
 </p>
 
+Connecting Devices
+After setting up the topology, the devices were interconnected using copper straight-through cables to establish connections between PCs, switches, and routers. This ensures proper communication paths within the network.
+Screenshot of the connected setup:
+<p align="center">
+<img src="https://imgur.com/xbeZNwa.png" height="80%" width="80%" alt="Connecting Devices"/>
+</p>
 ---
 
-### **2. Configuring the Switch using CLI**
+### **2. Configuring the Router and Switch CLI**
+The configuration commands for the router and switches include setting up IP addresses, enabling interfaces, and defining routing. Below are example commands for Router R1:
 
-#### **VLAN Configuration**
-
-Create VLANs 10, 20, 30, and 100 on the Layer 3 switch, assigning IP addresses and subnet masks as specified.
-
-<p align="center">
-  <img src="https://imgur.com/bHgGepd.png" width="80%" alt="VLAN Setup"/>
-  <img src="https://imgur.com/1ZpW6gY.png" width="80%" alt="VLAN Setup"/>
-</p>
-
-#### **Confirming VLAN Creation**
-
-<p align="center">
-  <img src="https://imgur.com/mzZxkA6.png" width="80%" alt="VLAN Confirmation"/>
-</p>
-
-#### **Setting Up Interfaces**
-
-- **Server Port (Access Port)**
-  
-<p align="center">
-  <img src="https://imgur.com/yPzmbBu.png" width="80%" alt="Access Port Configuration"/>
-</p>
-
-- **Switch Trunk Ports**
-
-<p align="center">
-  <img src="https://imgur.com/yAGCuux.png" width="80%" alt="Trunk Port Configuration"/>
-</p>
-
-Check configuration using:
 ```plaintext
-show run
+enable
+configure terminal
+interface g0/0
+ip address 192.168.0.1 255.255.255.0
+no shutdown
+exit
+interface g0/1
+ip address 192.168.1.1 255.255.255.0
+no shutdown
 ```
 
+
+<h2>Screenshot of router CLI configuration:</h2>
 <p align="center">
-  <img src="https://imgur.com/idtzqGD.png" width="80%" alt="Show Run Command"/>
-  <img src="https://imgur.com/OM5moKN.png" width="80%" alt="Show Run Command"/>
+Router Configuration on interface G0/0:  <br/>
+<img src="https://imgur.com/Qd7AqmC.png" height="80%" width="80%" alt="Router Configuration"/>
+<img src="https://imgur.com/Oo5CVyY.png" height="80%" width="80%" alt="Router Configuration"/>
 </p>
 
-#### **Configuring VTP (VLAN Trunking Protocol)**
+<h2>Similarly, the switches are configured to assign management IPs and enable VLANs if needed.</h2>
 
-1. Check existing VTP domain:
-   ```plaintext
-   show vtp status
-   ```
-
-2. Set up a new domain:
-   ```plaintext
-   configure terminal
-   vtp domain ccna
-   ```
-
+Screenshot of switch CLI configuration:
 <p align="center">
-  <img src="https://imgur.com/j2q5uaK.png" width="80%" alt="VTP Configuration"/>
-  <img src="https://imgur.com/UKoDHOv.png" width="80%" alt="VTP Configuration"/>
-</p>
+Switch Configuration:
 
-#### **Enable IP Routing**
+<h3>S1:</h3>
+<img src="https://imgur.com/FJgE43b.png" height="80%" width="80%" alt="Switch Configuration"/>
 
-<p align="center">
-  <img src="https://imgur.com/cZr9g7V.png" width="80%" alt="Enable IP Routing"/>
+<br/>
+<br/>
+<h3>S2:</h3>
+<img src="https://imgur.com/lQnIMGu.png" height="80%" width="80%" alt="Switch Configuration"/>
+
 </p>
 
 ---
 
-### **3. Configuring Layer 2 Switches**
-
-- Set IP addresses and subnet masks under VLAN 1.
-- Configure `g0/1` as trunk port and `f0/1` as access port.
-- Set default gateway to VLAN 1 IP of Layer 3 switch.
-
+### **3. Configuring PCs**
+Each PC's IP settings were manually configured using the built-in IP configuration tool.
 <p align="center">
-  <img src="https://imgur.com/mMHNfQO.png" width="80%" alt="Layer 2 Switch Configuration"/>
-  <img src="https://imgur.com/fH4T7Ma.png" width="80%" alt="Layer 2 Switch Configuration"/>
+<h4>PC0:</h4> <img src="https://imgur.com/JFsVC2c.png" height="80%" width="80%" alt="Configuring PCs"/> <br/>
+<h4>PC1:</h4> <img src="https://imgur.com/bPUM3ty.png" height="80%" width="80%" alt="Configuring PCs"/> <br/>
+<h4>PC2:</h4> <img src="https://imgur.com/fGADqtY.png" height="80%" width="80%" alt="Configuring PCs"/> <br/>
+<h4>PC3:</h4> <img src="https://imgur.com/lHm53IK.png" height="80%" width="80%" alt="Configuring PCs"/> <br/>
 </p>
 
-Repeat these steps for the remaining switches.
-
----
-
-### **4. Configuring PCs and Server**
-
-Manually configure IP settings on each PC and Server.
-
+Logical View:
 <p align="center">
-  <strong>PC1:</strong><br/>
-  <img src="https://imgur.com/ynzenXY.png" width="80%" alt="PC1 Config"/><br/><br/>
+<img src="https://imgur.com/rII4vgQ.png" height="80%" width="80%" alt="Configuring PCs"/> <br/>
 
-  <strong>PC2:</strong><br/>
-  <img src="https://imgur.com/qMhfYNb.png" width="80%" alt="PC2 Config"/><br/><br/>
-
-  <strong>PC3:</strong><br/>
-  <img src="https://imgur.com/gyZjloG.png" width="80%" alt="PC3 Config"/><br/><br/>
-
-  <strong>Server:</strong><br/>
-  <img src="https://imgur.com/rGkcJdv.png" width="80%" alt="Server Config"/>
 </p>
 
 ---
 
-### **5. Running the Simulation**
+### **4. Running the Simulation**
+Using Packet Tracer's simulation mode, ICMP packets (ping requests) were sent between PCs across subnets. The packet flow was monitored to ensure proper routing and connectivity.
 
-To test configurations, ping PCs and the server to verify connectivity.
-Ping from PC1 to PC3 and Switch3
+*Screenshot of simulation process:*  
 <p align="center">
-<img src="https://imgur.com/rjsdiJU.png" height="80%" width="80%" alt="Router Configuration"/>
+  <strong>Steps of the Simulation</strong><br/>
+
+  <strong>PC0 Sends the Ping Request</strong><br/>
+  At time <strong>0.000 seconds</strong>, PC0 generates an ICMP Echo Request packet (ping) and sends it to its default gateway, <strong>Router R1 (192.168.0.1)</strong>, via <strong>Switch S1</strong>.<br/>
+  <img src="https://imgur.com/1L7zQOC.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Packet Travels from PC0 to Switch S1</strong><br/>
+  At time <strong>0.001 seconds</strong>, the packet moves from PC0 to <strong>Switch S1 (192.168.0.2)</strong>.<br/>
+  <img src="https://imgur.com/iuvMOVg.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Switch S1 Forwards the Packet to Router R1</strong><br/>
+  At time <strong>0.002 seconds</strong>, Switch S1 identifies the packet’s destination and forwards it to <strong>Router R1 (192.168.0.1)</strong> via interface g0/0.<br/>
+  <img src="https://imgur.com/JeAzdKb.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Router R1 Routes the Packet to Switch S2</strong><br/>
+  At time <strong>0.003 seconds</strong>, Router R1 examines its routing table, determines that the destination IP is on the <strong>192.168.1.0/24 subnet</strong>, and forwards the packet to <strong>Switch S2 (192.168.1.2)</strong> via interface g0/1.<br/>
+  <img src="https://imgur.com/FyzoVZM.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Packet Reaches PC3</strong><br/>
+  At time <strong>0.004 seconds</strong>, Switch S2 delivers the ICMP Echo Request packet to <strong>PC2 (192.168.1.4)</strong>.<br/>
+  <img src="https://imgur.com/QjntCoE.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>PC2 Sends the Ping Reply</strong><br/>
+  PC2 responds with an ICMP Echo Reply packet, which begins its journey back to PC0.<br/>
+  <img src="https://imgur.com/FyzoVZM.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Reply Packet Travels Back Through the Network</strong><br/>
+  The Echo Reply follows the reverse path:<br/>
+  - <strong>PC2 → Switch S2 → Router R1</strong><br/>
+  <img src="https://imgur.com/JeAzdKb.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+  
+  - <strong>Router R1 → Switch S1 → PC0</strong><br/>
+  
+  <img src="https://imgur.com/iuvMOVg.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Ping Successful</strong><br/>
+  At time <strong>0.008 seconds</strong>, PC0 receives the Echo Reply, confirming that communication between the two devices is functional.<br/>
+  <img src="https://imgur.com/jOODYo5.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+  <strong>Simulation Table</strong><br/>
+  <img src="https://imgur.com/yAVVFHz.png" height="80%" width="80%" alt="Configuring PCs"/><br/><br/>
+
+
 </p>
 
-Ping from Switch3 to PC1, PC2 and PC3
-<p align="center">
-<img src="https://imgur.com/wFr3qpO.png" height="80%" width="80%" alt="Router Configuration"/>
-</p>
+
 ---
 
-## ✅ **Conclusion**
+### **5. Troubleshooting**
+During the simulation, troubleshooting steps involved:
+- Verifying IP configuration on all devices.
+- Checking routing table entries.
+- Ensuring correct subnet masks and default gateway settings.
 
-The network was successfully configured. All VLANs communicate as expected, and inter-switch communication works via trunking and IP routing.
+---
+
+### **6. Simulation Complete**
+All devices were able to communicate across the network, demonstrating a successful configuration.
+
+---
+
